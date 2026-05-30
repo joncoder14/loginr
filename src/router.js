@@ -1,11 +1,11 @@
 //create the routes
 
-import { formLogin } from "./views/login";
-import { client } from "./views/client";
+import { formLogin, events } from "./views/login";
+import { client, addCarr } from "./views/client";
 
 const routes = {
-  "/": formLogin,
-  "/client": client,
+  "/": { path: formLogin, envents: events },
+  "/client": { path: client, envents: addCarr },
 };
 
 export function router() {
@@ -22,6 +22,7 @@ export function router() {
     return;
   }
 
-  const view = routes[path] || (() => `<h1> 404 error</h1>`); // get the function that have to render from the routes object if not found return 404
+  const view = routes[path].path || (() => `<h1> 404 error</h1>`); // get the function that have to render from the routes object if not found return 404
   document.getElementById("app").innerHTML = view(); //render the function that saved before to the app container
+  routes[path].envents?.();
 }
